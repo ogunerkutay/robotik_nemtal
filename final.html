@@ -460,6 +460,233 @@
                 transform: translateX(50%);
             }
         }
+
+        @page {
+            size: A4;
+            margin: 16mm 14mm 18mm;
+        }
+
+        @media print {
+            :root {
+                --ink: #111;
+                --muted: #333;
+                --paper: #fff;
+                --card: #fff;
+                --line: #b8bec7;
+                --soft-blue: #f3f6fb;
+                --soft-orange: #f8f2ef;
+                --soft-yellow: #faf6e8;
+                --soft-green: #f1f7f3;
+                --code-bg: #f4f4f4;
+                --code-fg: #111;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            body {
+                background: #fff;
+                color: #111;
+                font-size: 10.5pt;
+                line-height: 1.45;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            header {
+                background: #fff;
+                color: #111;
+                border-bottom: 2px solid #111;
+                padding: 0 0 10mm;
+                margin-bottom: 8mm;
+            }
+
+            .hero,
+            .container {
+                width: 100%;
+                max-width: none;
+            }
+
+            .hero p {
+                color: #333;
+            }
+
+            .eyebrow,
+            .pill {
+                background: #fff;
+                color: #111;
+                border: 1px solid #999;
+            }
+
+            h1 {
+                font-size: 22pt;
+            }
+
+            h2 {
+                font-size: 15pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            h3,
+            summary,
+            .activity-label {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            p,
+            li,
+            td,
+            th {
+                orphans: 3;
+                widows: 3;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .card {
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0;
+                margin: 0 0 8mm;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            #faaliyet-1,
+            #faaliyet-2,
+            #faaliyet-3,
+            #faaliyet-4,
+            #uygulama-faaliyeti,
+            #olcme,
+            #kaynaklar {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .grid.two,
+            .grid.three,
+            .terms,
+            .toc,
+            .video-grid,
+            .checklist,
+            .flow {
+                display: block;
+            }
+
+            .term,
+            .timeline-item,
+            .activity-box,
+            .callout,
+            details {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .term {
+                margin-bottom: 4mm;
+            }
+
+            .activity-label {
+                color: #111;
+                background: #fff;
+                border: 1px solid #111;
+            }
+
+            .callout,
+            .activity-box {
+                border-radius: 0;
+            }
+
+            table {
+                border-radius: 0;
+                overflow: visible;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
+
+            tr {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            th {
+                background: #e8ebef;
+                color: #111;
+            }
+
+            .flow-item {
+                text-align: left;
+                border-radius: 0;
+                margin-bottom: 3mm;
+            }
+
+            .flow-item:not(:last-child)::after {
+                content: "↓";
+                position: static;
+                display: block;
+                transform: none;
+                margin-top: 2mm;
+            }
+
+            pre,
+            .code-block {
+                color: #111;
+                background: #f4f4f4;
+                border: 1px solid #bbb;
+                border-radius: 0;
+                white-space: pre-wrap;
+                word-break: break-word;
+                overflow: visible;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            details {
+                border-radius: 0;
+            }
+
+            details > * {
+                display: block;
+            }
+
+            details summary {
+                list-style: none;
+            }
+
+            details summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .video-grid {
+                display: none;
+            }
+
+            a {
+                color: #111;
+                text-decoration: none;
+            }
+
+            a[href^="http"]::after {
+                content: " (" attr(href) ")";
+                font-size: 8.5pt;
+                color: #444;
+                word-break: break-all;
+            }
+        }
     </style>
 </head>
 <body>
