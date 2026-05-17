@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ABB IRB 1200 Robotik Proje Günlüğü</title>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Roboto', Arial, sans-serif;
+			margin: 0;
+			background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+			color: #222;
+		}
+		header {
+			background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+			color: #fff;
+			padding: 2em 1em 1em 1em;
+			text-align: center;
+			box-shadow: 0 2px 12px #aaa3;
+		}
+		h1 {
+			font-family: 'Montserrat', Arial, sans-serif;
+			font-size: 2.5em;
+			margin-bottom: 0.2em;
+			letter-spacing: 2px;
+		}
+		.desc {
+			font-size: 1.1em;
+			margin-bottom: 2em;
+			color: #444;
+		}
+		.week {
+			background: #fff;
+			border-radius: 18px;
+			box-shadow: 0 4px 24px #aaa2;
+			margin: 2em auto;
+			max-width: 800px;
+			padding: 2em 2em 1.5em 2em;
+			position: relative;
+			border-left: 8px solid #667eea;
+			transition: box-shadow 0.3s;
+		}
+		.week:hover {
+			box-shadow: 0 8px 32px #667eea55;
+		}
+		.week-title {
+			font-size: 1.5em;
+			font-family: 'Montserrat', Arial, sans-serif;
+			color: #667eea;
+			margin-bottom: 0.5em;
+		}
+		.people {
+			font-size: 1em;
+			color: #764ba2;
+			margin-bottom: 1em;
+			font-weight: 500;
+		}
+		.video-section {
+			margin: 1.5em 0 1em 0;
+			text-align: center;
+		}
+		iframe {
+			border-radius: 12px;
+			box-shadow: 0 2px 12px #aaa;
+			margin-bottom: 0.5em;
+		}
+		.code {
+			background: #f3f3fa;
+			padding: 0.5em 1em;
+			border-radius: 6px;
+			font-family: 'Roboto Mono', monospace;
+			margin: 0.5em 0;
+			color: #333;
+			font-size: 1em;
+		}
+		.note {
+			background: #e0eafc;
+			border-left: 4px solid #764ba2;
+			padding: 0.7em 1em;
+			border-radius: 6px;
+			margin: 1em 0;
+			color: #444;
+		}
+		footer {
+			margin-top: 3em;
+			color: #888;
+			font-size: 1em;
+			text-align: center;
+			padding-bottom: 2em;
+		}
+		@media (max-width: 600px) {
+			.week { padding: 1em 0.5em; }
+			iframe { width: 100% !important; height: 200px !important; }
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>ABB IRB 1200 Robotik Proje Günlüğü</h1>
+		<div class="desc">Her hafta yapılan çalışmaları, ekip üyelerini ve önemli anları aşağıda bulabilirsiniz. Kodlar, simülasyonlar ve gerçek robot uygulamalarıyla dolu bir yolculuk!</div>
+	</header>
+
+	<div class="week">
+		<div class="week-title">1. Hafta: Flex Pendant ile İlk Denemeler</div>
+		<div class="people">Katılanlar: Ogün, Ali, Meral</div>
+		<div>IRB 1200 robotun manuelleri indirilip okunmadan önce, flex pendant el kontrolörü ile robotu manuel olarak kontrol ettik, kalibrasyon yaptık ve robotu hızlandırdık.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">2. Hafta: RobotStudio'da RAPID ile Hello World</div>
+		<div class="people">Katılanlar: Ali, Yekta, Ahmet Hoca, Ogün</div>
+		<div>RobotStudio içerisinde RAPID diliyle "Hello World" kodu yazıldı. Açtığımız nemtal admin üyeliğiyle bu kod flex pendant'a aktarıldı ve pendant üzerinden otomatik olarak çalıştırıldı.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">3. Hafta: Döküman İncelemesi</div>
+		<div class="people">Katılanlar: Ogün</div>
+		<div>ABB IRB 1200 robot dökümanları okundu, teknik bilgiler toplandı.</div>
+		<div class="note">Robotun teknik dökümanları, ilerideki uygulamalar için temel oluşturdu.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">4. Hafta: RobotStudio Simülasyonunda Hedef Takibi</div>
+		<div class="people">Katılanlar: Ogün, Ali</div>
+		<div>Bu hafta, RobotStudio'nun simülasyon ortamında teach target yapıp, hedefler arası path (yol) takibini başarıyla gerçekleştirdik.</div>
+		<div class="note">Simülasyondaki hareket kodlarını almak için premium lisans gerektiğini keşfettik.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">5. Hafta: MoveIt2 ile "Hello World" ve Kebab Akşamı</div>
+		<div class="people">Katılanlar: Yekta, Ali, Ogün</div>
+		<div>Yekta ve Ali ile gelip MoveIT2 ile "Hello World" denemesi yaptık. <a href="https://moveit.picknik.ai/main/doc/tutorials/your_first_project/your_first_project.html" target="_blank">MoveIt2 Tutorial</a></div>
+		<div class="video-section">
+			<iframe width="420" height="236" src="https://www.youtube-nocookie.com/embed/8tFBCamvT78" title="5. Hafta Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="video-links" style="font-size:0.95em;margin-top:0.4em;">
+				<a href="https://www.youtube.com/watch?v=8tFBCamvT78" target="_blank" rel="noopener">Open on YouTube</a>
+			</div>
+		</div>
+		<div class="note">ABB'nin RobotStudio programındaki simülasyon tarafından hareket kodlarını alabilmek için premium lisans gerektiğini keşfettik. Bunun üzerine manuel kod yazarak hareket ettirmeye karar verdik. Öncelikle robota güzel bir kalibrasyon yapmaya ve sömestr sonrasında MoveIT2 ile robotu kontrol etmeye karar verdik. Güzel bir kebap akşamından sonra iyi akşamlar diyerek evlere dağıldık.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">6. Hafta: Flex Pendant ile Döngüsel Hareketler</div>
+		<div class="people">Katılanlar: Ogün, Ali</div>
+		<div>Bu hafta, robota başarılı bir kalibrasyon yaptıktan sonra, flex pendant cihazı ile manuel olarak öğrettiğimiz pozisyonlara otomatik modda ve farklı hızlarda döngüsel olarak hareket ettirdik. Robot, kaydedilen pozisyonlar arasında sorunsuz şekilde geçiş yaptı.</div>
+		<div class="video-section">
+			<iframe width="420" height="236" src="https://www.youtube-nocookie.com/embed/rUY9O6VT9JM" title="6. Hafta Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="video-links" style="font-size:0.95em;margin-top:0.4em;">
+				<a href="https://www.youtube.com/watch?v=rUY9O6VT9JM" target="_blank" rel="noopener">Open on YouTube</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">7. Hafta: RViz ile Manuel Jog Takibi</div>
+		<div class="people">Katılanlar: Ogün, Yekta, Ali</div>
+		<div>Bu hafta, robotu manuel jog ile hareket ettirip, bu hareketleri RViz'de izleyebildiğimizi keşfettik.</div>
+		<div class="video-section">
+			<iframe width="420" height="236" src="https://www.youtube-nocookie.com/embed/HyYsq8_uLwE" title="7. Hafta Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="video-links" style="font-size:0.95em;margin-top:0.4em;">
+				<a href="https://www.youtube.com/watch?v=HyYsq8_uLwE" target="_blank" rel="noopener">Open on YouTube</a>
+			</div>
+		</div>
+		<div class="code">ros2 run abb_rws_client rws_client --ros-args -p robot_ip:="192.168.125.1" -p robot_port:=80 -p no_connection_timeout:=false -r /rws/joint_states:=/joint_states</div>
+		<div class="note">Keşif: Sadece manuel yapılan hareketler RViz'de görüntülenebildi, başka bir entegrasyon veya otomasyon bilgimiz yoktu.</div>
+	</div>
+
+	<div class="week">
+		<div class="week-title">8. Hafta: Publisher/Subscriber ile Gerçek Robot</div>
+		<div class="people">Katılanlar: Ogün, Yekta, Ali</div>
+		<div>Flex pendant'ta kaydedilen programda değişkenler ile pozisyonlar değiştirildi, RViz'de sürükle-bırak ile planlanan hareketler gerçek robota aktarıldı. Publisher/Subscriber mekanizması kullanıldı.</div>
+		<div class="video-section">
+			<iframe width="420" height="236" src="https://www.youtube-nocookie.com/embed/aliCy_xpTeg" title="8. Hafta Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="video-links" style="font-size:0.95em;margin-top:0.4em;">
+				<a href="https://www.youtube.com/watch?v=aliCy_xpTeg" target="_blank" rel="noopener">Open on YouTube</a>
+			</div>
+		</div>
+		<div class="note">Simülasyondan gerçek robota hareket aktarımı başarıyla gerçekleştirildi.</div>
+	</div>
+
+	<div class="week" style="background:linear-gradient(90deg,#f9d423 0%,#ff4e50 100%);color:#fff;border-left:8px solid #ff4e50;">
+        <div class="week-title" style="color:#fff;">Kodlar ve Açıklamalar</div>
+        <div class="people">moveit_to_abb.py, ROS_Bridge_RAPID.txt, ros2 launch abb bringup.txt</div>
+        <div style="margin-bottom:1em;">Aşağıda projede kullanılan kodların tam içerikleri ve kısa açıklamaları yer almaktadır:</div>
+        <b>moveit_to_abb.py</b> (MoveIt2 ile planlanan hareketlerin ABB robotuna aktarılmasını sağlayan Python ROS2 kodu):
+        <pre style="background:#222;color:#fff;padding:1em;border-radius:8px;overflow-x:auto;font-size:0.95em;">
+import rclpy
+from rclpy.node import Node
+from moveit_msgs.msg import DisplayTrajectory
+from abb_robot_msgs.srv import SetRAPIDSymbol
+from abb_robot_msgs.msg import RAPIDSymbolPath
+import math
+
+class MoveItToABB(Node):
+    def __init__(self):
+        super().__init__('moveit_to_abb')
+        # 1. Listen to MoveIt's planned path
+        self.subscription = self.create_subscription(
+            DisplayTrajectory,
+            '/display_planned_path',
+            self.listener_callback,
+            10)
+        # 2. Connect to the ABB RWS services
+        self.client = self.create_client(SetRAPIDSymbol, '/rws/set_rapid_symbol')
+        # Ensure the service is available before proceeding
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Waiting for /rws/set_rapid_symbol service...')
+
+    def listener_callback(self, msg):
+        if not msg.trajectory:
+            return
+        self.get_logger().info("New path received from MoveIt! Processing...")
+        # Grab the final joint positions of the planned path (in radians)
+        final_point = msg.trajectory[0].joint_trajectory.points[-1]
+        joints_rad = final_point.positions
+        # Convert radians to degrees for the ABB controller
+        j_deg = [math.degrees(j) for j in joints_rad]
+        # Format the exact syntax RAPID requires
+        rapid_target = f"[[{j_deg[0]:.2f}, {j_deg[1]:.2f}, {j_deg[2]:.2f}, {j_deg[3]:.2f}, {j_deg[4]:.2f}, {j_deg[5]:.2f}], [9E9, 9E9, 9E9, 9E9, 9E9, 9E9]]"
+        # --- BUILD THE PATH OBJECTS ---
+        # IMPORTANT: Change \"ROS_Bridge\" if your FlexPendant shows a different module name!
+        target_path = RAPIDSymbolPath(task="T_ROB1", module="ROS_Bridge", symbol="ros_target")
+        flag_path = RAPIDSymbolPath(task="T_ROB1", module="ROS_Bridge", symbol="move_flag")
+        # --- THE DEBUG CATCHER ---
+        # This function waits for the robot's reply and prints the exact error code
+        def handle_response(future, variable_name):
+            try:
+                response = future.result()
+                self.get_logger().info(f"Reply for '{variable_name}': Code={response.result_code}, Message='{response.message}'")
+            except Exception as e:
+                self.get_logger().error(f"Service call failed for '{variable_name}': {e}")
+        # --- SEND COORDINATES ---
+        req_joints = SetRAPIDSymbol.Request(path=target_path, value=rapid_target)
+        future_joints = self.client.call_async(req_joints)
+        future_joints.add_done_callback(lambda f: handle_response(f, "ros_target"))
+        # --- FLIP THE SWITCH ---
+        req_flag = SetRAPIDSymbol.Request(path=flag_path, value="TRUE")
+        future_flag = self.client.call_async(req_flag)
+        future_flag.add_done_callback(lambda f: handle_response(f, "move_flag"))
+        self.get_logger().info(f"Command Sent! Target Degrees: {j_deg[0]:.1f}, {j_deg[1]:.1f}, {j_deg[2]:.1f}...")
+
+def main():
+    rclpy.init()
+    node = MoveItToABB()
+    print("Bridge Script with Error Logging Running. Waiting for MoveIt plans...")
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+</pre>
+<b>ROS_Bridge_RAPID.txt</b> (Robotun RAPID programında ROS'tan gelen hedef ve bayrak değişkenlerini işleyen ABB kodu):
+<pre style="background:#222;color:#fff;padding:1em;border-radius:8px;overflow-x:auto;font-size:0.95em;">
+MODULE ROS_Bridge
+    PERS bool move_flag := FALSE;
+    PERS jointtarget ros_target := [[0,0,0,0,0,0],[9E9,9E9,9E9,9E9,9E9,9E9]];
+
+    PROC main()
+        WHILE TRUE DO
+            IF move_flag = TRUE THEN
+                TPWrite "--- ROS SIGNAL RECEIVED! ---";
+                MoveAbsJ ros_target, v50, fine, tool0;
+                move_flag := FALSE;
+            ENDIF
+            WaitTime 0.1;
+        ENDWHILE
+    ENDPROC
+ENDMODULE
+</pre>
+<b>ros2 launch abb bringup.txt</b> (ABB robotunu başlatmak ve ROS2 ile bağlantı komutları):
+<pre style="background:#222;color:#fff;padding:1em;border-radius:8px;overflow-x:auto;font-size:0.95em;">
+ros2 run abb_rws_client rws_client --ros-args     -p robot_ip:="192.168.125.1"     -p robot_port:=80     -p no_connection_timeout:=false     -r /rws/joint_states:=/joint_states
+
+# Bu komut, ABB robotunun ROS2 ile haberleşmesini sağlayan RWS istemcisini başlatır. Robotun gerçek zamanlı eklem durumlarını ROS2'ye aktarır.
+# Kullanım amacı: Robotun eklem verilerini ROS2'ye almak ve robot ile ROS arasında veri alışverişi başlatmak.
+
+ros2 launch abb_bringup abb_moveit.launch.py     robot_xacro_file:=irb1200_5_90.xacro     support_package:=abb_irb1200_support     moveit_config_package:=abb_irb1200_5_90_moveit_config     moveit_config_file:=abb_irb1200_5_90.srdf.xacro
+
+# Bu komut, MoveIt2 ve ABB robotunun ROS2 ortamında başlatılması için kullanılır. Robotun modelini, MoveIt konfigürasyonunu ve destek paketlerini yükler.
+# Kullanım amacı: MoveIt2 ile robotun planlama ve kontrolünü sağlamak, simülasyon veya gerçek robot üzerinde hareket planlarını oluşturmak.
+
+python3 moveit_to_abb.py
+
+# Bu komut, MoveIt2 tarafından planlanan hareketleri ABB robotuna gönderen Python ROS2 düğümünü başlatır.
+# Kullanım amacı: Planlanan hareketlerin ABB robotuna aktarılması ve robotun bu hareketleri uygulamasını sağlamak.
+</pre>
+</div>
+
+	<footer>
+		Oluşturanlar: <b>Ahmet Baştuğ, Ogün Erkutay, Ali Asghar, Yekta</b> &mdash; ABB IRB 1200 Robotik Proje &copy; 2026
+	</footer>
+</body>
+</html>
