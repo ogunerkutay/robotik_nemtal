@@ -1073,7 +1073,7 @@ CONST robtarget target10 := [[500, 0, 300], [1, 0, 0, 0], [0, 0, 0, 0], [9E9, 9E
                 <li>Hareket alanının güvenli olduğunu kontrol ediniz.</li>
             </ol>
 
-            <h3>4.2.1. Kalibrasyon (ABB Resmi Dokümanlarına Göre)</h3>
+            <h3>4.3. Kalibrasyon (ABB Resmi Dokümanlarına Göre)</h3>
             <p>
                 ABB Product Manual IRB 1200 ve işletme dokümanlarında, doğru yol hassasiyeti için kalibrasyonun
                 periyodik olarak doğrulanması önerilir. Özellikle takım değişimi, çarpışma veya bakım sonrası
@@ -1094,7 +1094,7 @@ CONST robtarget target10 := [[500, 0, 300], [1, 0, 0, 0], [0, 0, 0, 0], [9E9, 9E
                 Kalibrasyon sonrası programlar düşük hızda denenmeli, sonuç doğrulandıktan sonra otomatik çevrime geçilmelidir.
             </p>
 
-            <h3>4.3. Bilgisayar Tarafında Çalıştırılacak Komutlar</h3>
+            <h3>4.4. Bilgisayar Tarafında Çalıştırılacak Komutlar</h3>
             <p><strong>Terminal 1 — RWS istemcisini başlatma</strong></p>
             <pre><code>ros2 run abb_rws_client rws_client --ros-args \
   -p robot_ip:="192.168.125.1" \
@@ -1114,7 +1114,7 @@ CONST robtarget target10 := [[500, 0, 300], [1, 0, 0, 0], [0, 0, 0, 0], [9E9, 9E
 # Kalem ile yazı yazdırma uygulaması için:
 python3 /home/yekta/son1.py</code></pre>
 
-            <h3>4.4. Köprü Programının Çalışma Mantığı</h3>
+            <h3>4.5. Köprü Programının Çalışma Mantığı</h3>
             <p>
                 Python programı MoveIt tarafından yayınlanan planı dinler. Planın son noktasındaki eklem açılarını alır,
                 radyan değerlerini dereceye çevirir ve bu değerleri ABB kontrolöründeki <code>ros_target</code> değişkenine yazar.
@@ -1169,7 +1169,7 @@ class MoveItToABB(Node):
 ENDMODULE</code></pre>
             </details>
 
-            <h3>4.5. Örnek Uygulama Gelişim Süreci</h3>
+            <h3>4.6. Örnek Uygulama Gelişim Süreci</h3>
             <div class="timeline">
                 <div class="timeline-item"><span class="week-tag">1</span>FlexPendant ile manuel hareket ve kalibrasyon çalışmaları yapılmıştır.</div>
                 <div class="timeline-item"><span class="week-tag">2</span>RobotStudio ortamında temel RAPID programı hazırlanmıştır.</div>
@@ -1188,7 +1188,7 @@ ENDMODULE</code></pre>
                 <div class="video-wrapper"><iframe src="https://www.youtube-nocookie.com/embed/aliCy_xpTeg" title="8. Hafta Video" allowfullscreen></iframe></div>
             </div>
 
-            <h3>4.6. Çalışma Esnasında Dikkat Edilecek Hususlar</h3>
+            <h3>4.7. Çalışma Esnasında Dikkat Edilecek Hususlar</h3>
             <table>
                 <thead>
                     <tr><th>Durum</th><th>Kontrol Edilecek Nokta</th></tr>
