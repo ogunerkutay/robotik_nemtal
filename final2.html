@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABB IRB 1200 ve ROS2 ile Robot Programlama</title>
+    <style>
+        :root {
+            --ink: #243447;
+            --muted: #5f6b7a;
+            --paper: #f5f7fb;
+            --card: #ffffff;
+            --accent: #e4572e;
+            --accent-2: #5b7cfa;
+            --accent-3: #1f9d7a;
+            --line: #dfe5ee;
+            --soft-blue: #edf3ff;
+            --soft-orange: #fff3ed;
+            --soft-yellow: #fff8db;
+            --soft-green: #edf9f3;
+            --code-bg: #18212f;
+            --code-fg: #e8eef8;
+            --shadow: 0 18px 45px rgba(36, 52, 71, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.65;
+            background: linear-gradient(180deg, #eef3fb 0%, var(--paper) 360px);
+            color: var(--ink);
+        }
+
+        a {
+            color: var(--accent-2);
+        }
+
+        header {
+            color: #fff;
+            background:
+                radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 32%),
+                linear-gradient(135deg, #22324a 0%, #18212f 55%, #101722 100%);
+            padding: 54px 20px 42px;
+            border-bottom: 5px solid var(--accent);
+        }
+
+        .hero,
+        .container {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            margin: 16px 0 12px;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.12;
+        }
+
+        .hero p {
+            max-width: 860px;
+            margin: 0;
+            color: rgba(255,255,255,0.82);
+            font-size: 1.08rem;
+        }
+
+        .container {
+            padding: 28px 0 56px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid.three {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(223, 229, 238, 0.9);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 26px;
+            margin-bottom: 22px;
+        }
+
+        .card h2,
+        .card h3 {
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.65rem;
+            line-height: 1.25;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--line);
+        }
+
+        h3 {
+            color: var(--accent);
+            font-size: 1.18rem;
+        }
+
+        .lead {
+            font-size: 1.08rem;
+            color: var(--muted);
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 7px 12px;
+            background: var(--soft-blue);
+            color: #3556b7;
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
+        .toc {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 18px;
+            padding: 0;
+            list-style: none;
+            margin-bottom: 0;
+        }
+
+        .toc li {
+            border-bottom: 1px dashed var(--line);
+            padding: 8px 0;
+        }
+
+        .toc a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        .callout {
+            border-left: 5px solid var(--accent-2);
+            background: var(--soft-blue);
+            padding: 18px 18px 18px 20px;
+            border-radius: 12px;
+            margin: 18px 0;
+        }
+
+        .callout.warning {
+            border-left-color: #d99a00;
+            background: var(--soft-yellow);
+        }
+
+        .callout.success {
+            border-left-color: var(--accent-3);
+            background: var(--soft-green);
+        }
+
+        .callout.orange {
+            border-left-color: var(--accent);
+            background: var(--soft-orange);
+        }
+
+        .study-step {
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .study-step::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            bottom: 10px;
+            width: 4px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        }
+
+        .mini-title {
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .terms {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .term {
+            background: #fbfcfe;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .term strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--accent-2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--line);
+            padding: 13px 14px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #25364e;
+            color: #fff;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafbfd;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            align-items: stretch;
+            margin: 20px 0;
+        }
+
+        .flow-item {
+            position: relative;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .flow-item:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .code-block,
+        pre {
+            background: var(--code-bg);
+            color: var(--code-fg);
+            border-radius: 14px;
+            overflow-x: auto;
+            padding: 18px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.93rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        details {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fbfcfe;
+            padding: 14px 16px;
+            margin: 16px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .timeline {
+            display: grid;
+            gap: 14px;
+        }
+
+        .timeline-item {
+            border-left: 4px solid var(--accent);
+            padding: 14px 16px;
+            background: #fff;
+            border-radius: 0 14px 14px 0;
+            border-top: 1px solid var(--line);
+            border-right: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .week-tag {
+            display: inline-block;
+            margin-bottom: 8px;
+            border-radius: 999px;
+            padding: 4px 10px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 14px;
+            box-shadow: 0 10px 28px rgba(24, 33, 47, 0.18);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px 18px;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-3);
+            font-weight: 800;
+        }
+
+        .footer-note {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .module-table th {
+            width: 24%;
+        }
+
+        .activity-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            border-radius: 999px;
+            padding: 6px 12px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .activity-box {
+            border-left: 5px solid var(--accent-2);
+            background: var(--soft-blue);
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin: 18px 0;
+        }
+
+        .activity-box strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .process-table th:first-child {
+            width: 38%;
+        }
+
+        .self-check td:last-child,
+        .self-check th:last-child {
+            width: 18%;
+            text-align: center;
+        }
+
+        .question-list li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .grid.two,
+            .grid.three,
+            .terms,
+            .toc,
+            .video-grid,
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-item:not(:last-child)::after {
+                content: "↓";
+                right: 50%;
+                top: auto;
+                bottom: -18px;
+                transform: translateX(50%);
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 16mm 14mm 18mm;
+        }
+
+        @media print {
+            :root {
+                --ink: #111;
+                --muted: #333;
+                --paper: #fff;
+                --card: #fff;
+                --line: #b8bec7;
+                --soft-blue: #f3f6fb;
+                --soft-orange: #f8f2ef;
+                --soft-yellow: #faf6e8;
+                --soft-green: #f1f7f3;
+                --code-bg: #f4f4f4;
+                --code-fg: #111;
+            }
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            body {
+                background: #fff;
+                color: #111;
+                font-size: 10.5pt;
+                line-height: 1.45;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            header {
+                background: #fff;
+                color: #111;
+                border-bottom: 2px solid #111;
+                padding: 0 0 10mm;
+                margin-bottom: 8mm;
+            }
+
+            .hero,
+            .container {
+                width: 100%;
+                max-width: none;
+            }
+
+            .hero p {
+                color: #333;
+            }
+
+            .eyebrow,
+            .pill {
+                background: #fff;
+                color: #111;
+                border: 1px solid #999;
+            }
+
+            h1 {
+                font-size: 22pt;
+            }
+
+            h2 {
+                font-size: 15pt;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            h3,
+            summary,
+            .activity-label {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            p,
+            li,
+            td,
+            th {
+                orphans: 3;
+                widows: 3;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .card {
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0;
+                margin: 0 0 8mm;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            #faaliyet-1,
+            #faaliyet-2,
+            #faaliyet-3,
+            #faaliyet-4,
+            #uygulama-faaliyeti,
+            #olcme,
+            #kaynaklar {
+                break-before: page;
+                page-break-before: always;
+            }
+
+            .grid.two,
+            .grid.three,
+            .terms,
+            .toc,
+            .video-grid,
+            .checklist,
+            .flow {
+                display: block;
+            }
+
+            .term,
+            .timeline-item,
+            .activity-box,
+            .callout,
+            details {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .term {
+                margin-bottom: 4mm;
+            }
+
+            .activity-label {
+                color: #111;
+                background: #fff;
+                border: 1px solid #111;
+            }
+
+            .callout,
+            .activity-box {
+                border-radius: 0;
+            }
+
+            table {
+                border-radius: 0;
+                overflow: visible;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
+
+            tr {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            th {
+                background: #e8ebef;
+                color: #111;
+            }
+
+            .flow-item {
+                text-align: left;
+                border-radius: 0;
+                margin-bottom: 3mm;
+            }
+
+            .flow-item:not(:last-child)::after {
+                content: "↓";
+                position: static;
+                display: block;
+                transform: none;
+                margin-top: 2mm;
+            }
+
+            pre,
+            .code-block {
+                color: #111;
+                background: #f4f4f4;
+                border: 1px solid #bbb;
+                border-radius: 0;
+                white-space: pre-wrap;
+                word-break: break-word;
+                overflow: visible;
+                break-inside: auto;
+                page-break-inside: auto;
+            }
+
+            details {
+                border-radius: 0;
+            }
+
+            details > * {
+                display: block;
+            }
+
+            details summary {
+                list-style: none;
+            }
+
+            details summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .video-grid {
+                display: none;
+            }
+
+            a {
+                color: #111;
+                text-decoration: none;
+            }
+
+            a[href^="http"]::after {
+                content: " (" attr(href) ")";
+                font-size: 8.5pt;
+                color: #444;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="hero">
+            <div class="eyebrow">Bireysel Öğrenme Materyali</div>
+            <h1>ABB IRB 1200 ve ROS2 ile Robot Programlama</h1>
+            <p>
+                Endüstriyel robotların temel yapısını, ABB IRB 1200 robotunun çalışma mantığını,
+                RAPID programlama kavramlarını ve ROS2 üzerinden gerçek robotla haberleşme yöntemlerini
+                öğrenmeye yönelik eğitim modülü.
+            </p>
+            <div class="pill-row">
+                <span class="pill">Endüstriyel Robotlar</span>
+                <span class="pill">RAPID</span>
+                <span class="pill">ROS2</span>
+                <span class="pill">MoveIt</span>
+                <span class="pill">RViz</span>
+                <span class="pill">Robot Web Services</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card" id="aciklamalar">
+            <h2>Açıklamalar</h2>
+            <table class="module-table">
+                <tbody>
+                    <tr><th>Alan</th><td>Endüstriyel Otomasyon Teknolojileri</td></tr>
+                    <tr><th>Dal / Meslek</th><td>Mekatronik</td></tr>
+                    <tr><th>Modülün Adı</th><td>ABB IRB 1200 ve ROS2 ile Robot Programlama</td></tr>
+                    <tr><th>Modülün Tanımı</th><td>Bu modül; endüstriyel robotların temel yapısını, ABB IRB 1200 robotunun eksenlerini, RAPID veri tiplerini, ROS2 haberleşme yapısını ve gerçek robot üzerinde uygulama adımlarını tanıtan öğretim materyalidir.</td></tr>
+                    <tr><th>Önerilen Çalışma Düzeni</th><td>4 öğrenme faaliyeti</td></tr>
+                    <tr><th>Ön Koşul</th><td>Temel bilgisayar kullanımı ve iş güvenliği bilgisi</td></tr>
+                    <tr><th>Yeterlik</th><td>ABB IRB 1200 robotunun çalışma mantığını açıklamak ve ROS2 tabanlı robot hareket zincirini takip etmek</td></tr>
+                    <tr><th>Eğitim Ortamı ve Donanımları</th><td>Robot laboratuvarı, ABB IRB 1200, kontrol ünitesi, FlexPendant, ağ bağlantısı, Ubuntu yüklü bilgisayar, ROS2, MoveIt ve RViz</td></tr>
+                    <tr><th>Ölçme ve Değerlendirme</th><td>Her öğrenme faaliyeti sonunda uygulama adımları ve öz değerlendirme soruları; modül sonunda ölçme soruları</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card" id="amaclar">
+            <h2>Modülün Amacı</h2>
+            <h3>Genel Amaç</h3>
+            <p>
+                Bu modülü başarı ile tamamladığınızda ABB IRB 1200 robotunun temel yapısını açıklayabilecek,
+                robot hareketlerini koordinat ve eklem mantığı ile yorumlayabilecek, RAPID programlama öğelerini tanıyabilecek
+                ve ROS2 üzerinden yürütülen hareket aktarım sürecini anlayabileceksiniz.
+            </p>
+            <h3>Amaçlar</h3>
+            <ul class="checklist">
+                <li>Endüstriyel robotların temel bileşenlerini açıklayabileceksiniz.</li>
+                <li>ABB IRB 1200 robotunun 6 eksenli yapısını ve kullanım alanlarını tanıyabileceksiniz.</li>
+                <li>Koordinat sistemi, serbestlik derecesi, TCP ve ters kinematik kavramlarını ayırt edebileceksiniz.</li>
+                <li>RAPID dilindeki temel veri tiplerini ve hareket komutlarını açıklayabileceksiniz.</li>
+                <li>ROS2, MoveIt, RViz ve RWS bileşenlerinin görevlerini açıklayabileceksiniz.</li>
+                <li>Gerçek sistemin çalıştırılma sırasını ve veri akışını takip edebileceksiniz.</li>
+            </ul>
+        </section>
+
+        <section class="card" id="giris">
+            <h2>Giriş</h2>
+            <p>
+                <strong>Sevgili Öğrenci,</strong>
+            </p>
+            <p>
+                Otomasyon sistemlerinin yaygınlaştığı günümüzde robotlar; üretim, taşıma, montaj, paketleme ve kalite kontrol gibi birçok alanda görev almaktadır.
+                Bir robotun doğru çalışabilmesi için yalnızca mekanik yapısının bilinmesi yeterli değildir. Robotun hangi eksenlere sahip olduğu, hedef noktalara nasıl ulaştığı,
+                hangi programlama dili ile yönetildiği ve bilgisayar sistemleriyle nasıl haberleştiği de öğrenilmelidir.
+            </p>
+            <p>
+                Bu modülde önce endüstriyel robotların temel yapısı incelenecek, ardından ABB IRB 1200 robotunun özellikleri öğrenilecektir.
+                Daha sonra RAPID programlama dili, ROS2 haberleşme yapısı ve gerçek robot üzerinde kullanılan uygulama adımları ele alınacaktır.
+                Modül sonunda yalnızca komutları ezberlemeniz değil, robotun neden ve nasıl hareket ettiğini kavramanız beklenmektedir.
+            </p>
+        </section>
+
+        <section class="card" id="icindekiler">
+            <h2>İçindekiler</h2>
+            <ul class="toc">
+                <li><a href="#faaliyet-1">Öğrenme Faaliyeti 1 — Endüstriyel Robotlar ve ABB IRB 1200</a></li>
+                <li><a href="#faaliyet-2">Öğrenme Faaliyeti 2 — Koordinat, Hareket ve RAPID</a></li>
+                <li><a href="#faaliyet-3">Öğrenme Faaliyeti 3 — ROS2 ile Robot Haberleşmesi</a></li>
+                <li><a href="#faaliyet-4">Öğrenme Faaliyeti 4 — Gerçek Sistem Uygulaması</a></li>
+                <li><a href="#uygulama-faaliyeti">Uygulama Faaliyeti</a></li>
+                <li><a href="#olcme">Ölçme ve Değerlendirme</a></li>
+                <li><a href="#kaynaklar">Kaynakça</a></li>
+            </ul>
+        </section>
+
+        <section class="card" id="faaliyet-1">
+            <span class="activity-label">ÖĞRENME FAALİYETİ 1</span>
+            <h2>Endüstriyel Robotlar ve ABB IRB 1200</h2>
+            <div class="activity-box">
+                <strong>Amaç</strong>
+                Bu faaliyet sonunda endüstriyel robotun tanımını, temel bileşenlerini ve ABB IRB 1200 robotunun başlıca özelliklerini açıklayabileceksiniz.
+            </div>
+            <div class="activity-box">
+                <strong>Araştırma</strong>
+                Çevrenizde kullanılan endüstriyel robot örneklerini araştırınız. Robotların hangi işleri yaptığını ve neden insan yerine tercih edildiğini sınıfta tartışınız.
+            </div>
+
+            <h3>1.1. Endüstriyel Robot Nedir?</h3>
+            <p>
+                Endüstriyel robot; programlanabilir eksenlere sahip, farklı görevler için yeniden kullanılabilen ve üretim ortamlarında çalışan otomatik kontrollü bir manipülatördür.
+                Robotlar özellikle tekrarlı, hassas, hızlı veya insan için tehlikeli olan işlemlerde kullanılır.
+            </p>
+
+            <h3>1.2. Robotik Sistemin Temel Bölümleri</h3>
+            <table>
+                <thead>
+                    <tr><th>Bölüm</th><th>Görevi</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Mekanik yapı</td><td>Taban, bağlantı parçaları, kollar, bilek ve uç efektörden oluşur.</td></tr>
+                    <tr><td>Kontrol sistemi</td><td>Programı çalıştırır, eksen hareketlerini yönetir ve karar verir.</td></tr>
+                    <tr><td>Güç ünitesi</td><td>Motorlara hareket için gerekli enerjiyi sağlar.</td></tr>
+                    <tr><td>Algılayıcılar</td><td>Robotun ve çevrenin durumunu takip etmeye yardımcı olur.</td></tr>
+                    <tr><td>Uç efektör</td><td>Gripper, kalem, kaynak torcu veya vakum aparatı gibi işi yapan parçadır.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>1.3. ABB IRB 1200 Robotu</h3>
+            <p>
+                ABB IRB 1200, dar alanlarda çalışabilen, hızlı çevrim sürelerine sahip 6 eksenli bir endüstriyel robottur.
+                Küçük parça taşıma, montaj, paketleme, makine besleme ve hassas uygulamalarda kullanılabilir.
+            </p>
+            <div class="grid two">
+                <div>
+                    <h3>Temel parçaları</h3>
+                    <ul>
+                        <li><strong>Taban:</strong> Robotun sabitlendiği ana bölümdür.</li>
+                        <li><strong>Alt ve üst kol:</strong> Uzanma ve katlanma hareketlerini oluşturur.</li>
+                        <li><strong>Bilek:</strong> Takımın yönünü ayarlayan eksenleri taşır.</li>
+                        <li><strong>Flanş:</strong> Takımın bağlandığı son yüzeydir.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Başlıca özellikleri</h3>
+                    <ul>
+                        <li>Kompakt gövde yapısı</li>
+                        <li>6 eksenli hareket kabiliyeti</li>
+                        <li>Dahili kablolama</li>
+                        <li>Hız ve yol doğruluğunu geliştiren hareket teknolojileri</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>1.4. Eksenlerin Görevleri</h3>
+            <table>
+                <thead>
+                    <tr><th>Eksen</th><th>Görev</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>J1</td><td>Robot gövdesinin sağa ve sola dönmesini sağlar.</td></tr>
+                    <tr><td>J2</td><td>Alt kolun yükselmesini ve alçalmasını sağlar.</td></tr>
+                    <tr><td>J3</td><td>Üst kolun açılmasını ve katlanmasını sağlar.</td></tr>
+                    <tr><td>J4</td><td>Bileğin kendi ekseni etrafında dönmesini sağlar.</td></tr>
+                    <tr><td>J5</td><td>Takımın aşağı ve yukarı eğilmesini sağlar.</td></tr>
+                    <tr><td>J6</td><td>Takımın son yönlendirme hareketini yapar.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>1.5. Kullanım Alanları ve Sınırları</h3>
+            <table>
+                <thead>
+                    <tr><th>Kullanım Alanı</th><th>Neden Uygundur?</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Elektronik montaj</td><td>Küçük parçaların hassas yerleştirilmesi gerekir.</td></tr>
+                    <tr><td>Paketleme ve taşıma</td><td>Hızlı ve tekrarlı hareket önemlidir.</td></tr>
+                    <tr><td>CNC makine besleme</td><td>Dar alanlara uzanma ve farklı yönlerde yaklaşma gerekir.</td></tr>
+                    <tr><td>Laboratuvar ve eğitim</td><td>Tekrarlanabilir hareketler ve açık geliştirme imkânı sağlar.</td></tr>
+                </tbody>
+            </table>
+            <div class="callout warning">
+                ABB IRB 1200 ağır yük taşıyan bir robot veya işbirlikçi robot değildir. İnsanla korumasız aynı alanda çalıştırılmamalı; erişim, yük ve güvenlik sınırları dikkate alınmalıdır.
+            </div>
+        </section>
+
+        <section class="card" id="faaliyet-2">
+            <span class="activity-label">ÖĞRENME FAALİYETİ 2</span>
+            <h2>Koordinat, Hareket ve RAPID Programlama</h2>
+            <div class="activity-box">
+                <strong>Amaç</strong>
+                Bu faaliyet sonunda robot hareketini koordinat ve eklem uzayı açısından açıklayabilecek, temel RAPID veri tiplerini ayırt edebileceksiniz.
+            </div>
+            <div class="activity-box">
+                <strong>Araştırma</strong>
+                Bir robot kolunun insan koluna benzeyen ve benzemeyen yönlerini araştırınız. Elde ettiğiniz sonuçları serbestlik derecesi kavramı ile ilişkilendiriniz.
+            </div>
+
+            <h3>2.1. Serbestlik Derecesi</h3>
+            <p>
+                Bir cismin yapabileceği bağımsız hareket sayısına <strong>serbestlik derecesi</strong> denir.
+                Uzayda bir cismin tam olarak tanımlanabilmesi için üç doğrusal hareket ve üç açısal hareket gerekir.
+                ABB IRB 1200 bu nedenle 6 eksenli bir robottur.
+            </p>
+
+            <h3>2.2. Kartezyen Uzay ve TCP</h3>
+            <div class="grid two">
+                <div>
+                    <ul>
+                        <li><strong>X:</strong> ileri - geri hareket</li>
+                        <li><strong>Y:</strong> sağ - sol hareket</li>
+                        <li><strong>Z:</strong> yukarı - aşağı hareket</li>
+                    </ul>
+                </div>
+                <div>
+                    <p>
+                        Robot çoğu zaman flanşı değil, takıma ait <strong>TCP</strong> noktasını hedefe götürür.
+                        Örneğin kalem takılı bir robotta önemli olan flanşın değil, kalem ucunun doğru noktaya gelmesidir.
+                    </p>
+                </div>
+            </div>
+
+            <h3>2.3. Düz ve Ters Kinematik</h3>
+            <table>
+                <thead>
+                    <tr><th>Kavram</th><th>Açıklama</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Düz kinematik</td><td>Bilinen eklem açılarına göre TCP konumunun hesaplanmasıdır.</td></tr>
+                    <tr><td>Ters kinematik</td><td>İstenen TCP konumuna ulaşmak için gerekli eklem açılarının hesaplanmasıdır.</td></tr>
+                </tbody>
+            </table>
+            <p>
+                Bir öğrencinin “kalem ucu şu noktaya gitsin” demesi koordinat düşüncesidir. Robot kontrolörünün bunu J1-J6 eksen açılarına çevirmesi ters kinematiktir.
+            </p>
+
+            <h3>2.4. Yönelim</h3>
+            <p>
+                Yalnızca hedef noktanın bilinmesi yeterli değildir. Takımın hangi yöne baktığı da belirlenmelidir.
+                Bu durum <strong>roll</strong>, <strong>pitch</strong> ve <strong>yaw</strong> hareketleri ile açıklanır.
+            </p>
+            <div class="callout warning">
+                Eksenlerin belirli konumlarda aynı doğrultuya yaklaşması <strong>tekillik</strong> oluşturabilir.
+                Tekillik durumlarında hareket planı hazırlanırken dikkatli olunmalıdır.
+            </div>
+
+            <h3>2.5. RAPID Veri Tipleri</h3>
+            <table>
+                <thead>
+                    <tr><th>Veri Tipi</th><th>Görevi</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>tooldata</code></td><td>Takımın TCP bilgisini ve fiziksel özelliklerini tanımlar.</td></tr>
+                    <tr><td><code>wobjdata</code></td><td>Çalışma nesnesine ait koordinat sistemini tanımlar.</td></tr>
+                    <tr><td><code>loaddata</code></td><td>Taşınan yükün kütlesini ve ağırlık merkezini tanımlar.</td></tr>
+                    <tr><td><code>robtarget</code></td><td>Konum, yönelim ve robot konfigürasyonunu birlikte taşır.</td></tr>
+                    <tr><td><code>jointtarget</code></td><td>Doğrudan eksen açılarını tanımlar.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.6. Temel Hareket Komutları</h3>
+            <table>
+                <thead>
+                    <tr><th>Komut</th><th>Açıklama</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>MoveJ</code></td><td>Robotu eklem uzayında hedefe götürür.</td></tr>
+                    <tr><td><code>MoveL</code></td><td>TCP'yi doğrusal bir yol üzerinde taşır.</td></tr>
+                    <tr><td><code>MoveAbsJ</code></td><td>Robotu belirtilen mutlak eklem açılarına götürür.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.7. Örnek Veri Tanımları</h3>
+            <pre><code>PERS tooldata myPen := [TRUE, [[0, 0, 150], [1, 0, 0, 0]], [0.2, [0, 0, 75], [1, 0, 0, 0], 0, 0, 0]];
+CONST robtarget target10 := [[500, 0, 300], [1, 0, 0, 0], [0, 0, 0, 0], [9E9, 9E9, 9E9, 9E9, 9E9, 9E9]];</code></pre>
+
+            <h3>2.8. FlexPendant ile Temel Çalışma Sırası</h3>
+            <ol>
+                <li>Robot güvenli konuma alınır.</li>
+                <li>Manuel mod seçilir.</li>
+                <li>Jog ile istenilen pozisyona gidilir.</li>
+                <li>Pozisyon kaydedilir.</li>
+                <li>Program hazırlanır.</li>
+                <li>Program işaretçisi <code>PP to Main</code> ile ana programa getirilir.</li>
+                <li>Gerekli güvenlik kontrollerinden sonra otomatik modda çalıştırılır.</li>
+            </ol>
+
+            <h3>2.9. Tekillik (Singularity) ve Tekillikten Çıkış</h3>
+            <p>
+                ABB resmi dokümanlarında, bilek eksenlerinin hizalanmasıyla (özellikle J4 ve J6 eksenleri birbirine yaklaşırken)
+                robotun yönelim çözümünde kararsızlık oluşabileceği belirtilir. Bu durum tekillik olarak adlandırılır ve
+                robot beklenmedik hızlanma veya ani bilek dönüşleri üretebilir.
+            </p>
+            <div class="callout warning">
+                Tekillik bölgesinden çıkarken doğrusal hareket yerine güvenli bir <code>MoveJ</code> ile
+                <strong>5. ekseni (J5) küçük bir açıyla</strong> yeniden konumlandırmak en yaygın yöntemdir.
+            </div>
+            <ol>
+                <li>Robotu düşük hızda manuel moda alınız.</li>
+                <li>J5 eksenini küçük adımlarla (ör. ±5° ila ±15°) değiştiriniz.</li>
+                <li>Yeni konfigürasyonda hedefe tekrar yaklaşınız.</li>
+                <li>Gerekirse noktayı <code>robtarget</code> içinde yeni konfigürasyonla güncelleyiniz.</li>
+            </ol>
+            <p>
+                Bu yaklaşım, tekillik hattını kırarak ters kinematik çözümünü daha kararlı hale getirir.
+            </p>
+        </section>
+
+        <section class="card" id="faaliyet-3">
+            <span class="activity-label">ÖĞRENME FAALİYETİ 3</span>
+            <h2>ROS2 ile Robot Haberleşmesi</h2>
+            <div class="activity-box">
+                <strong>Amaç</strong>
+                Bu faaliyet sonunda ROS2, MoveIt, RViz ve RWS bileşenlerinin görevlerini açıklayabilecek ve sistemdeki veri akışını izleyebileceksiniz.
+            </div>
+            <div class="activity-box">
+                <strong>Araştırma</strong>
+                Sürekli veri akışı ile kısa istek-cevap haberleşmesi arasındaki farkı araştırınız. Robot uygulamalarında hangisinin nerede kullanılabileceğine örnek veriniz.
+            </div>
+
+            <h3>3.1. Temel Kavramlar</h3>
+            <div class="terms">
+                <div class="term"><strong>Node</strong>Belirli bir görevi yerine getiren ROS2 program birimidir.</div>
+                <div class="term"><strong>Topic</strong>Sürekli veri akışı için kullanılan yayın - abone yapısıdır.</div>
+                <div class="term"><strong>Service</strong>Kısa süreli istek - cevap işlemlerinde kullanılır.</div>
+                <div class="term"><strong>MoveIt</strong>Hareket planlama, kinematik ve çarpışma kontrolü sağlar.</div>
+                <div class="term"><strong>RViz</strong>Robot modelini ve hareketlerini görselleştirir.</div>
+                <div class="term"><strong>RWS</strong>ABB kontrolörüyle web tabanlı haberleşme sağlar.</div>
+            </div>
+
+            <h3>3.2. Veri Akışının Genel Yapısı</h3>
+            <div class="flow">
+                <div class="flow-item">Gerçek robot</div>
+                <div class="flow-item">RWS istemcisi</div>
+                <div class="flow-item">ROS2 / MoveIt</div>
+                <div class="flow-item">Python köprüsü</div>
+                <div class="flow-item">RAPID programı</div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr><th>Aşama</th><th>Gerçekleşen İşlem</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Gerçek robotun eklem durumları <code>/joint_states</code> üzerinden ROS2'ye alınır.</td></tr>
+                    <tr><td>2</td><td>MoveIt, hedefe ulaşmak için bir hareket planı oluşturur.</td></tr>
+                    <tr><td>3</td><td>Python düğümü <code>/display_planned_path</code> konusunu dinler.</td></tr>
+                    <tr><td>4</td><td>Planın son eklem hedefi alınır ve radyan değerleri dereceye çevrilir.</td></tr>
+                    <tr><td>5</td><td><code>ros_target</code> ve <code>move_flag</code> değişkenleri ABB kontrolörüne yazılır.</td></tr>
+                    <tr><td>6</td><td>RAPID programı hedefi algılar ve <code>MoveAbsJ</code> komutunu çalıştırır.</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout orange">
+                Bu uygulamada bilgisayar tarafı, planlanan hareketin son eklem hedefini robota iletmektedir.
+                Tüm yörüngenin sürekli aktarılması ayrı ve daha gelişmiş bir uygulama konusudur.
+            </div>
+        </section>
+
+        <section class="card" id="faaliyet-4">
+            <span class="activity-label">ÖĞRENME FAALİYETİ 4</span>
+            <h2>Gerçek Sistem Uygulaması</h2>
+            <div class="activity-box">
+                <strong>Amaç</strong>
+                Bu faaliyet sonunda ağ ayarlarını, robot tarafı hazırlıklarını ve terminal komutlarını doğru sırayla açıklayabileceksiniz.
+            </div>
+            <div class="activity-box">
+                <strong>Araştırma</strong>
+                Bir robot kontrolörü ile bilgisayarın haberleşebilmesi için neden aynı ağ üzerinde bulunmaları gerektiğini araştırınız.
+            </div>
+
+            <h3>4.1. Ağ Yapılandırması</h3>
+            <table>
+                <thead>
+                    <tr><th>Bileşen</th><th>Değer</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Robot IP adresi</td><td><code>192.168.125.1</code></td></tr>
+                    <tr><td>Bilgisayar IP adresi</td><td><code>192.168.125.2</code></td></tr>
+                    <tr><td>Ağ maskesi</td><td><code>255.255.255.0</code></td></tr>
+                </tbody>
+            </table>
+
+            <h3>4.2. Robot Tarafında Yapılacak Hazırlıklar</h3>
+            <ol>
+                <li>Gerekli RAPID modülünün yüklü olduğunu kontrol ediniz.</li>
+                <li><code>ROS_Bridge</code> programında <code>PP to Main</code> işlemini yapınız.</li>
+                <li>Robotu otomatik moda alınız.</li>
+                <li>Motorları <strong>Motors ON</strong> durumuna getiriniz.</li>
+                <li>Hareket alanının güvenli olduğunu kontrol ediniz.</li>
+            </ol>
+
+            <h3>4.2.1. Kalibrasyon (ABB Resmi Dokümanlarına Göre)</h3>
+            <p>
+                ABB Product Manual IRB 1200 ve işletme dokümanlarında, doğru yol hassasiyeti için kalibrasyonun
+                periyodik olarak doğrulanması önerilir. Özellikle takım değişimi, çarpışma veya bakım sonrası
+                TCP ve referans noktalarının tekrar kontrol edilmesi gerekir.
+            </p>
+            <table>
+                <thead>
+                    <tr><th>Kalibrasyon Adımı</th><th>Açıklama</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Mekanik sıfır kontrolü</td><td>Eksende sapma veya mekanik kaçıklık olmadığını doğrulayınız.</td></tr>
+                    <tr><td>TCP kalibrasyonu</td><td>4 nokta veya uygun yöntemle takım merkez noktasını yeniden tanımlayınız.</td></tr>
+                    <tr><td>WorkObject doğrulama</td><td>Parça fikstürü değiştiyse kullanıcı koordinat sistemini güncelleyiniz.</td></tr>
+                    <tr><td>Test hareketi</td><td>Düşük hızda referans noktalara giderek sapma olup olmadığını kontrol ediniz.</td></tr>
+                </tbody>
+            </table>
+            <p>
+                Kalibrasyon sonrası programlar düşük hızda denenmeli, sonuç doğrulandıktan sonra otomatik çevrime geçilmelidir.
+            </p>
+
+            <h3>4.3. Bilgisayar Tarafında Çalıştırılacak Komutlar</h3>
+            <p><strong>Terminal 1 — RWS istemcisini başlatma</strong></p>
+            <pre><code>ros2 run abb_rws_client rws_client --ros-args \
+  -p robot_ip:="192.168.125.1" \
+  -p robot_port:=80 \
+  -p no_connection_timeout:=false \
+  -r /rws/joint_states:=/joint_states</code></pre>
+
+            <p><strong>Terminal 2 — MoveIt katmanını başlatma</strong></p>
+            <pre><code>ros2 launch abb_bringup abb_moveit.launch.py \
+  robot_xacro_file:=irb1200_5_90.xacro \
+  support_package:=abb_irb1200_support \
+  moveit_config_package:=abb_irb1200_5_90_moveit_config \
+  moveit_config_file:=abb_irb1200_5_90.srdf.xacro</code></pre>
+
+            <p><strong>Terminal 3 — Uygulama yazılımını çalıştırma</strong></p>
+            <pre><code>python3 moveit_to_abb.py
+# Kalem ile yazı yazdırma uygulaması için:
+python3 /home/yekta/son1.py</code></pre>
+
+            <h3>4.4. Köprü Programının Çalışma Mantığı</h3>
+            <p>
+                Python programı MoveIt tarafından yayınlanan planı dinler. Planın son noktasındaki eklem açılarını alır,
+                radyan değerlerini dereceye çevirir ve bu değerleri ABB kontrolöründeki <code>ros_target</code> değişkenine yazar.
+                Ardından <code>move_flag</code> değerini <code>TRUE</code> yaparak RAPID programına hareket isteği gönderir.
+            </p>
+            <details>
+                <summary><code>moveit_to_abb.py</code> kodunu inceleyiniz</summary>
+                <pre><code>import rclpy
+from rclpy.node import Node
+from moveit_msgs.msg import DisplayTrajectory
+from abb_robot_msgs.srv import SetRAPIDSymbol
+from abb_robot_msgs.msg import RAPIDSymbolPath
+import math
+
+class MoveItToABB(Node):
+    def __init__(self):
+        super().__init__('moveit_to_abb')
+        self.subscription = self.create_subscription(
+            DisplayTrajectory,
+            '/display_planned_path',
+            self.listener_callback,
+            10)
+        self.client = self.create_client(SetRAPIDSymbol, '/rws/set_rapid_symbol')
+
+    def listener_callback(self, msg):
+        if not msg.trajectory:
+            return
+        final_point = msg.trajectory[0].joint_trajectory.points[-1]
+        joints_rad = final_point.positions
+        j_deg = [math.degrees(j) for j in joints_rad]
+        rapid_target = f"[[{j_deg[0]:.2f}, {j_deg[1]:.2f}, {j_deg[2]:.2f}, {j_deg[3]:.2f}, {j_deg[4]:.2f}, {j_deg[5]:.2f}], [9E9, 9E9, 9E9, 9E9, 9E9, 9E9]]"
+        target_path = RAPIDSymbolPath(task="T_ROB1", module="ROS_Bridge", symbol="ros_target")
+        flag_path = RAPIDSymbolPath(task="T_ROB1", module="ROS_Bridge", symbol="move_flag")</code></pre>
+            </details>
+
+            <details>
+                <summary><code>ROS_Bridge</code> RAPID programını inceleyiniz</summary>
+                <pre><code>MODULE ROS_Bridge
+    PERS bool move_flag := FALSE;
+    PERS jointtarget ros_target := [[0,0,0,0,0,0],[9E9,9E9,9E9,9E9,9E9,9E9]];
+
+    PROC main()
+        WHILE TRUE DO
+            IF move_flag = TRUE THEN
+                TPWrite "--- ROS SIGNAL RECEIVED! ---";
+                MoveAbsJ ros_target, v50, fine, tool0;
+                move_flag := FALSE;
+            ENDIF
+            WaitTime 0.1;
+        ENDWHILE
+    ENDPROC
+ENDMODULE</code></pre>
+            </details>
+
+            <h3>4.5. Örnek Uygulama Gelişim Süreci</h3>
+            <div class="timeline">
+                <div class="timeline-item"><span class="week-tag">1</span>FlexPendant ile manuel hareket ve kalibrasyon çalışmaları yapılmıştır.</div>
+                <div class="timeline-item"><span class="week-tag">2</span>RobotStudio ortamında temel RAPID programı hazırlanmıştır.</div>
+                <div class="timeline-item"><span class="week-tag">3</span>Robotun teknik dokümanları incelenmiştir.</div>
+                <div class="timeline-item"><span class="week-tag">4</span>Simülasyon ortamında hedef öğretme ve yol oluşturma çalışmaları yapılmıştır.</div>
+                <div class="timeline-item"><span class="week-tag">5</span>MoveIt ile ilk denemeler gerçekleştirilmiştir.</div>
+                <div class="timeline-item"><span class="week-tag">6</span>Öğretilen konumlar arasında otomatik hareket uygulanmıştır.</div>
+                <div class="timeline-item"><span class="week-tag">7</span>Gerçek robot hareketleri RViz ortamında izlenmiştir.</div>
+                <div class="timeline-item"><span class="week-tag">8</span>Planlanan hareketin gerçek robota aktarımı yapılmıştır.</div>
+            </div>
+
+            <div class="video-grid">
+                <div class="video-wrapper"><iframe src="https://www.youtube-nocookie.com/embed/8tFBCamvT78" title="5. Hafta Video" allowfullscreen></iframe></div>
+                <div class="video-wrapper"><iframe src="https://www.youtube-nocookie.com/embed/rUY9O6VT9JM" title="6. Hafta Video" allowfullscreen></iframe></div>
+                <div class="video-wrapper"><iframe src="https://www.youtube-nocookie.com/embed/HyYsq8_uLwE" title="7. Hafta Video" allowfullscreen></iframe></div>
+                <div class="video-wrapper"><iframe src="https://www.youtube-nocookie.com/embed/aliCy_xpTeg" title="8. Hafta Video" allowfullscreen></iframe></div>
+            </div>
+
+            <h3>4.6. Çalışma Esnasında Dikkat Edilecek Hususlar</h3>
+            <table>
+                <thead>
+                    <tr><th>Durum</th><th>Kontrol Edilecek Nokta</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>RViz üzerinde robot görülüyor, gerçek robot hareket etmiyor.</td><td><code>PP to Main</code>, otomatik mod ve motorların açık olması kontrol edilmelidir.</td></tr>
+                    <tr><td><code>/joint_states</code> verisi alınamıyor.</td><td>IP adresleri, ağ maskesi ve RWS istemcisinin çalışıp çalışmadığı kontrol edilmelidir.</td></tr>
+                    <tr><td>Servis çağrısı başarısız oluyor.</td><td><code>/rws/set_rapid_symbol</code> servisinin hazır olup olmadığı kontrol edilmelidir.</td></tr>
+                    <tr><td>Robot beklenmeyen yönde hareket ediyor.</td><td>Hedef değerleri, radyan-derece dönüşümü, takım bilgisi ve çalışma koordinat sistemi kontrol edilmelidir.</td></tr>
+                    <tr><td>Kalem hedef noktaya ulaşıyor fakat yazı bozuk çıkıyor.</td><td>TCP kalibrasyonu, takım yönelimi ve yüzey yüksekliği tekrar kontrol edilmelidir.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card" id="uygulama-faaliyeti">
+            <h2>Uygulama Faaliyeti</h2>
+            <p>
+                Aşağıdaki işlemleri öğretmen gözetiminde ve iş güvenliği kurallarına uygun olarak uygulayınız.
+            </p>
+            <table class="process-table">
+                <thead>
+                    <tr><th>İşlem Basamakları</th><th>Öneriler</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Robotun taban, kol, bilek ve flanş bölümlerini gösteriniz.</td><td>Her bölümün görevini sözlü olarak açıklayınız.</td></tr>
+                    <tr><td>J1-J6 eksenlerini manuel modda gözlemleyiniz.</td><td>Her hareketten önce çalışma alanının güvenli olduğundan emin olunuz.</td></tr>
+                    <tr><td>Robot ve bilgisayar IP ayarlarını kontrol ediniz.</td><td>Robot ile bilgisayarın aynı ağda bulunması gerektiğini unutmayınız.</td></tr>
+                    <tr><td>RWS istemcisini çalıştırınız ve <code>/joint_states</code> verisini gözlemleyiniz.</td><td>Veri gelmiyorsa önce ağ ayarlarını kontrol ediniz.</td></tr>
+                    <tr><td>MoveIt ve RViz ortamını başlatınız.</td><td>Robot modelinin gerçek robota uygun olduğundan emin olunuz.</td></tr>
+                    <tr><td>Bir hedef planlayınız ve Python köprüsünü çalıştırınız.</td><td>Gerçek robot hareketinden önce hedefin güvenli olduğundan emin olunuz.</td></tr>
+                    <tr><td>RAPID tarafında <code>ros_target</code> ve <code>move_flag</code> mantığını açıklayınız.</td><td>Değişkenlerin görevlerini kendi cümlelerinizle ifade ediniz.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Kontrol Listesi</h3>
+            <table class="self-check">
+                <thead>
+                    <tr><th>Davranış</th><th>Evet / Hayır</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Robotun temel parçalarını tanımlayabildim.</td><td>□</td></tr>
+                    <tr><td>6 eksenin görevlerini açıklayabildim.</td><td>□</td></tr>
+                    <tr><td>TCP ve ters kinematik kavramlarını ayırt edebildim.</td><td>□</td></tr>
+                    <tr><td>RAPID veri tiplerinin görevlerini açıklayabildim.</td><td>□</td></tr>
+                    <tr><td>ROS2 veri akışını takip edebildim.</td><td>□</td></tr>
+                    <tr><td>Gerçek sistemi çalıştırma sırasını anlatabildim.</td><td>□</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card" id="olcme">
+            <h2>Ölçme ve Değerlendirme</h2>
+            <p>Aşağıdaki soruları dikkatlice okuyunuz ve cevaplandırınız.</p>
+            <ol class="question-list">
+                <li>Bir robotun yapabileceği bağımsız hareketlerin sayısına ne ad verilir?</li>
+                <li>TCP kavramı neden önemlidir?</li>
+                <li><code>tooldata</code> ile <code>wobjdata</code> arasındaki farkı açıklayınız.</li>
+                <li>ROS2'de topic ve service hangi durumlarda kullanılır?</li>
+                <li>Bu uygulamada Python programı MoveIt'ten aldığı hangi bilgiyi ABB kontrolörüne iletmektedir?</li>
+                <li><code>move_flag</code> değişkeninin görevi nedir?</li>
+                <li>Gerçek robot hareket etmiyorsa kontrol edilmesi gereken üç durumu yazınız.</li>
+                <li><code>MoveL</code> ile <code>MoveAbsJ</code> komutları arasındaki temel fark nedir?</li>
+            </ol>
+            <details>
+                <summary>Cevap anahtarını görüntüleyiniz</summary>
+                <ol>
+                    <li>Serbestlik derecesi.</li>
+                    <li>Robotun takım ucunu doğru noktaya götürmesini sağlar.</li>
+                    <li><code>tooldata</code> takımı, <code>wobjdata</code> çalışma koordinat sistemini tanımlar.</li>
+                    <li>Topic sürekli veri akışı; service kısa istek-cevap işlemleri için kullanılır.</li>
+                    <li>Planın son eklem hedefini.</li>
+                    <li>RAPID programına yeni hedefe hareket etmesi gerektiğini bildirir.</li>
+                    <li>Ağ ayarları, <code>PP to Main</code>, otomatik mod ve motorların açık olması kontrol edilmelidir.</li>
+                    <li><code>MoveL</code> doğrusal TCP hareketi, <code>MoveAbsJ</code> ise mutlak eklem hedefi hareketidir.</li>
+                </ol>
+            </details>
+        </section>
+
+        <section class="card" id="kaynaklar">
+            <h2>Kaynakça</h2>
+            <ul>
+                <li><code>Robot Programlama.pdf</code></li>
+                <li><code>Fabrika Otomasyon 9.pdf</code></li>
+                <li><code>ABB IRB 1200.pdf</code></li>
+                <li><code>ADIM ADIM ABB IRB 1200.pdf</code></li>
+                <li><code>Scara_Robot_Uygulama.pdf</code></li>
+                <li>ABB Product Manual: IRB 1200 (official)</li>
+                <li>ABB Operating Manual: IRC5 with FlexPendant (official)</li>
+                <li>Proje uygulama kayıtları ve kullanılan kod dosyaları</li>
+            </ul>
+            <p class="footer-note">
+                Bu materyal, endüstriyel robotların temel mantığını öğrenmek ve ABB IRB 1200 üzerinde yapılan uygulamaları takip etmek amacıyla hazırlanmıştır.
+            </p>
+        </section>
+    </main>
+</body>
+</html>
